@@ -2,6 +2,14 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+const MODELS = [
+  "gemini-flash-latest",
+  "gemini-pro-latest",
+  "gemini-2.5-flash-lite",
+  "gemini-3-flash-preview",
+  "gemini-3-pro-preview",
+];
+
 export async function analyzeIdea(title: string, description: string) {
   const prompt = `You are an expert startup consultant. Analyze the given startup idea and return a structured JSON object with the fields: problem, customer, market, competitor, tech_stack, risk_level, profitability_score, justification.
 
@@ -19,15 +27,24 @@ Rules:
 
 Input: { "title": "${title}", "description": "${description}" }`;
 
-  const model = client.getGenerativeModel({ model: "gemini-flash-latest" });
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  let lastError;
 
-const clean = text.replace(/```json|```/g, "").trim();
-  
-  // extract JSON object in case there's extra text
-  const match = clean.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error("No JSON found in response");
-  
-  return JSON.parse(match[0]);
+  for (const modelName of MODELS) {
+    try {
+      const model = client.getGenerativeModel({
+        model: modelName,
+        generationConfig: { responseMimeType: "application/json" } as any,
+      });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      const match = text.replace(/```json|```/g, "").trim().match(/\{[\s\S]*\}/);
+      if (!match) throw new Error("No JSON in response");
+      return JSON.parse(match[0]);
+    } catch (err) {
+      console.warn(`Model ${modelName} failed, trying next...`);
+      lastError = err;
+    }
+  }
+
+  throw new Error(`All models failed. Last error: ${lastError}`);
 }

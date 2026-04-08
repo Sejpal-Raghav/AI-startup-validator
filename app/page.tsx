@@ -11,7 +11,7 @@ export default function Home() {
   const [error, setError] = useState("");
 
   async function handleSubmit() {
-    if (!title || !description) return setError("Fill in both fields.");
+    if (!title.trim() || !description.trim()) return setError("both fields required.");
     setLoading(true);
     setError("");
 
@@ -21,98 +21,87 @@ export default function Home() {
       body: JSON.stringify({ title, description }),
     });
 
-    if (!res.ok) {
-      setError("Something went wrong. Try again.");
-      setLoading(false);
-      return;
-    }
-
+    if (!res.ok) { setError("something went wrong."); setLoading(false); return; }
     const data = await res.json();
     router.push(`/ideas/${data.id}`);
   }
 
+  const inputStyle = {
+    width: "100%",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border)",
+    borderRadius: "8px",
+    padding: "0.75rem 1rem",
+    color: "var(--text)",
+    fontSize: "0.9rem",
+    outline: "none",
+    transition: "border-color 0.2s",
+    fontFamily: "inherit",
+  };
+
   return (
-    <div className="mt-16 max-w-2xl mx-auto">
-      <h1 style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-1px" }}>
-        Got a startup idea?
+    <div style={{ maxWidth: "580px", margin: "4rem auto 0" }}>
+      <p className="label" style={{ marginBottom: "0.8rem" }}>startup validator</p>
+      <h1 style={{ fontSize: "2.2rem", fontWeight: 700, letterSpacing: "-1.5px", lineHeight: 1.15 }}>
+        is your idea<br />
+        <span style={{ color: "var(--accent)" }}>worth building?</span>
       </h1>
-      <p style={{ color: "#777", marginTop: "0.5rem", fontSize: "0.95rem" }}>
-        Drop it below and get an AI-powered validation report in seconds.
+      <p style={{ color: "var(--text-muted)", marginTop: "0.75rem", fontSize: "0.88rem" }}>
+        drop your idea. get a brutal, honest AI analysis.
       </p>
 
       <div style={{ marginTop: "2.5rem", display: "flex", flexDirection: "column", gap: "1.2rem" }}>
         <div>
-          <label style={{ fontSize: "0.8rem", color: "#999", textTransform: "uppercase", letterSpacing: "1px" }}>
-            Idea Title
-          </label>
+          <label className="label">idea title</label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. AI-powered resume builder"
-            style={{
-              marginTop: "0.5rem",
-              width: "100%",
-              background: "#1a1a1a",
-              border: "1px solid #2a2a2a",
-              borderRadius: "8px",
-              padding: "0.75rem 1rem",
-              color: "#e8e8e8",
-              fontSize: "0.95rem",
-              outline: "none",
-              transition: "border-color 0.2s",
-            }}
-            onFocus={(e) => (e.target.style.borderColor = "#f5c518")}
-            onBlur={(e) => (e.target.style.borderColor = "#2a2a2a")}
+            placeholder="e.g. AI that roasts your business plan"
+            style={inputStyle}
+            onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
+            onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
           />
         </div>
 
         <div>
-          <label style={{ fontSize: "0.8rem", color: "#999", textTransform: "uppercase", letterSpacing: "1px" }}>
-            Description
-          </label>
+          <label className="label">describe it</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe your idea in a few sentences..."
+            placeholder="what problem does it solve? who is it for?"
             rows={5}
-            style={{
-              marginTop: "0.5rem",
-              width: "100%",
-              background: "#1a1a1a",
-              border: "1px solid #2a2a2a",
-              borderRadius: "8px",
-              padding: "0.75rem 1rem",
-              color: "#e8e8e8",
-              fontSize: "0.95rem",
-              outline: "none",
-              resize: "vertical",
-              transition: "border-color 0.2s",
-            }}
-            onFocus={(e) => (e.target.style.borderColor = "#f5c518")}
-            onBlur={(e) => (e.target.style.borderColor = "#2a2a2a")}
+            style={{ ...inputStyle, resize: "vertical" }}
+            onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
+            onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
           />
         </div>
 
-        {error && <p style={{ color: "#ff6b6b", fontSize: "0.85rem" }}>{error}</p>}
+        {error && <p style={{ color: "var(--danger)", fontSize: "0.82rem" }}>{error}</p>}
 
         <button
           onClick={handleSubmit}
           disabled={loading}
           style={{
-            background: loading ? "#2a2a2a" : "#f5c518",
-            color: loading ? "#555" : "#0f0f0f",
+            background: loading ? "var(--bg-card)" : "var(--accent)",
+            color: loading ? "var(--text-muted)" : "#0f0f0f",
             border: "none",
             borderRadius: "8px",
             padding: "0.85rem",
             fontWeight: 700,
-            fontSize: "0.95rem",
+            fontSize: "0.9rem",
             cursor: loading ? "not-allowed" : "pointer",
+            fontFamily: "inherit",
             transition: "opacity 0.2s",
-            width: "100%",
           }}
         >
-          {loading ? "Analyzing..." : "Validate Idea →"}
+          {loading ? "analyzing..." : "validate →"}
         </button>
+
+        {loading && (
+          <p style={{ color: "var(--text-muted)", fontSize: "0.78rem", textAlign: "center", fontStyle: "italic" }}>
+            "the graveyard is full of ideas that never shipped." — takes ~15s
+          </p>
+        )}
       </div>
     </div>
   );

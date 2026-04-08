@@ -10,48 +10,39 @@ export default async function Dashboard() {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
         <div>
-          <h1 style={{ fontSize: "1.8rem", fontWeight: 700, letterSpacing: "-1px" }}>Your Ideas</h1>
-          <p style={{ color: "#777", fontSize: "0.9rem", marginTop: "0.3rem" }}>{ideas.length} idea{ideas.length !== 1 && "s"} validated</p>
+          <h1 style={{ fontSize: "1.6rem", fontWeight: 700, letterSpacing: "-1px" }}>your ideas</h1>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.3rem" }}>
+            {ideas.length} idea{ideas.length !== 1 ? "s" : ""} validated
+          </p>
         </div>
-        <Link
-          href="/"
-          style={{
-            background: "#f5c518",
-            color: "#0f0f0f",
-            padding: "0.6rem 1.2rem",
-            borderRadius: "8px",
-            fontWeight: 700,
-            fontSize: "0.85rem",
-            textDecoration: "none",
-          }}
-        >
-          + New Idea
+        <Link href="/" style={{
+          background: "var(--accent)", color: "#0f0f0f",
+          padding: "0.55rem 1.1rem", borderRadius: "8px",
+          fontWeight: 700, fontSize: "0.82rem", textDecoration: "none",
+        }}>
+          + new idea
         </Link>
       </div>
 
       {ideas.length === 0 ? (
-        <div style={{ textAlign: "center", marginTop: "5rem", color: "#555" }}>
-          <p style={{ fontSize: "1.1rem" }}>No ideas yet.</p>
-          <p style={{ fontSize: "0.85rem", marginTop: "0.4rem" }}>Submit your first idea to get started.</p>
+        <div style={{ textAlign: "center", marginTop: "6rem", color: "var(--text-muted)" }}>
+          <p style={{ fontSize: "1rem" }}>nothing here yet.</p>
+          <p style={{ fontSize: "0.82rem", marginTop: "0.4rem", fontStyle: "italic" }}>
+            "an idea not validated is just a wish."
+          </p>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
           {ideas.map((idea: any) => (
             <Link key={idea.id} href={`/ideas/${idea.id}`} style={{ textDecoration: "none" }}>
-              <div style={{
-                background: "#1a1a1a",
-                border: "1px solid #2a2a2a",
-                borderRadius: "10px",
-                padding: "1.2rem 1.5rem",
-                cursor: "pointer",
-              }} className="idea-card">
+              <div className="card" style={{ padding: "1.1rem 1.4rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <h2 style={{ fontWeight: 600, fontSize: "1rem", color: "#e8e8e8" }}>{idea.title}</h2>
-                  <span style={{ color: "#555", fontSize: "0.8rem" }}>
+                  <h2 style={{ fontWeight: 600, fontSize: "0.95rem" }}>{idea.title}</h2>
+                  <span style={{ color: "var(--text-muted)", fontSize: "0.78rem" }}>
                     {new Date(idea.created_at).toLocaleDateString()}
                   </span>
                 </div>
-                <p style={{ color: "#666", fontSize: "0.85rem", marginTop: "0.4rem", lineHeight: 1.5 }}>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.83rem", marginTop: "0.35rem", lineHeight: 1.5 }}>
                   {idea.description.length > 120 ? idea.description.slice(0, 120) + "..." : idea.description}
                 </p>
               </div>

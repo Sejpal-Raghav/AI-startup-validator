@@ -10,88 +10,80 @@ export default async function IdeaReport({ params }: { params: Promise<{ id: str
   const r = idea.report;
 
   const riskColor: Record<string, string> = {
-    Low: "#4caf50",
-    Medium: "#f5c518",
-    High: "#ff6b6b",
+    Low: "#4caf50", Medium: "#f5c518", High: "#ff6b6b",
   };
 
   return (
-    <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
 
-      {/* Header */}
       <div style={{ marginBottom: "2.5rem" }}>
-        <p style={{ color: "#f5c518", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "1px" }}>Validation Report</p>
-        <h1 style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-1px", marginTop: "0.4rem" }}>{idea.title}</h1>
-        <p style={{ color: "#666", fontSize: "0.85rem", marginTop: "0.4rem" }}>{idea.description}</p>
+        <p className="label" style={{ color: "var(--accent)", marginBottom: "0.5rem" }}>validation report</p>
+        <h1 style={{ fontSize: "1.9rem", fontWeight: 700, letterSpacing: "-1px" }}>{idea.title}</h1>
+        <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.4rem" }}>{idea.description}</p>
       </div>
 
-      {/* Score Row */}
+      {/* Score row */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "2rem" }}>
-        <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "10px", padding: "1.2rem" }}>
-          <p style={{ color: "#777", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "1px" }}>Profitability Score</p>
-          <p style={{ fontSize: "2.5rem", fontWeight: 700, color: "#f5c518", marginTop: "0.3rem" }}>{r.profitability_score}<span style={{ fontSize: "1rem", color: "#555" }}>/100</span></p>
+        <div className="card" style={{ padding: "1.2rem" }}>
+          <p className="label">profitability score</p>
+          <p style={{ fontSize: "2.4rem", fontWeight: 700, color: "var(--accent)", marginTop: "0.2rem" }}>
+            {r.profitability_score}<span style={{ fontSize: "1rem", color: "var(--text-muted)" }}>/100</span>
+          </p>
         </div>
-        <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "10px", padding: "1.2rem" }}>
-          <p style={{ color: "#777", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "1px" }}>Risk Level</p>
-          <p style={{ fontSize: "2.5rem", fontWeight: 700, color: riskColor[r.risk_level] ?? "#e8e8e8", marginTop: "0.3rem" }}>{r.risk_level}</p>
+        <div className="card" style={{ padding: "1.2rem" }}>
+          <p className="label">risk level</p>
+          <p style={{ fontSize: "2.4rem", fontWeight: 700, color: riskColor[r.risk_level] ?? "var(--text)", marginTop: "0.2rem" }}>
+            {r.risk_level}
+          </p>
         </div>
       </div>
 
-      {/* Sections */}
+      {/* Text sections */}
       {[
-        { label: "Problem", value: r.problem },
-        { label: "Target Customer", value: r.customer },
-        { label: "Market Overview", value: r.market },
-        { label: "Justification", value: r.justification },
+        { label: "problem", value: r.problem },
+        { label: "target customer", value: r.customer },
+        { label: "market overview", value: typeof r.market === "object" ? `${r.market.size} — ${r.market.trend}` : r.market },
+        { label: "justification", value: r.justification },
       ].map(({ label, value }) => (
-        <Section key={label} label={label} value={value} />
+        <div key={label} style={{ marginBottom: "1.4rem" }}>
+          <p className="label">{label}</p>
+          <div className="card" style={{ padding: "1rem 1.2rem" }}>
+            <p style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.7 }}>{value}</p>
+          </div>
+        </div>
       ))}
 
       {/* Competitors */}
-      <div style={{ marginBottom: "1.5rem" }}>
-        <SectionLabel label="Competitors" />
+      <div style={{ marginBottom: "1.4rem" }}>
+        <p className="label">competitors</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
           {r.competitor.map((c: { name: string; differentiation: string }, i: number) => (
-            <div key={i} style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px", padding: "0.9rem 1.2rem", display: "flex", gap: "1rem", alignItems: "flex-start" }}>
-              <span style={{ color: "#f5c518", fontWeight: 700, minWidth: "20px" }}>{i + 1}.</span>
+            <div key={i} className="card" style={{ padding: "0.9rem 1.2rem", display: "flex", gap: "1rem" }}>
+              <span style={{ color: "var(--accent)", fontWeight: 700, minWidth: "18px" }}>{i + 1}.</span>
               <div>
-                <p style={{ fontWeight: 600, fontSize: "0.9rem" }}>{c.name}</p>
-                <p style={{ color: "#777", fontSize: "0.85rem", marginTop: "0.2rem" }}>{c.differentiation}</p>
+                <p style={{ fontWeight: 600, fontSize: "0.88rem" }}>{c.name}</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.83rem", marginTop: "0.2rem" }}>{c.differentiation}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Tech Stack */}
-      <div style={{ marginBottom: "2rem" }}>
-        <SectionLabel label="Suggested Tech Stack" />
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
+      {/* Tech stack */}
+      <div style={{ marginBottom: "2.5rem" }}>
+        <p className="label">suggested tech stack</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
           {r.tech_stack.map((tech: string) => (
-            <span key={tech} style={{ background: "#1f1f1f", border: "1px solid #2a2a2a", borderRadius: "6px", padding: "0.4rem 0.9rem", fontSize: "0.85rem", color: "#e8e8e8" }}>
+            <span key={tech} className="card" style={{ padding: "0.35rem 0.85rem", fontSize: "0.82rem", borderRadius: "6px" }}>
               {tech}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Back */}
-      <a href="/dashboard" style={{ color: "#555", fontSize: "0.85rem", textDecoration: "none" }}>← Back to Dashboard</a>
-    </div>
-  );
-}
-
-function SectionLabel({ label }: { label: string }) {
-  return <p style={{ color: "#777", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "0.6rem" }}>{label}</p>;
-}
-
-function Section({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ marginBottom: "1.5rem" }}>
-      <SectionLabel label={label} />
-      <p style={{ color: "#ccc", fontSize: "0.95rem", lineHeight: 1.7, background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px", padding: "1rem 1.2rem" }}>
-        {value}
-      </p>
+      <a href="/dashboard" style={{ color: "var(--text-muted)", fontSize: "0.82rem", textDecoration: "none" }}>
+        ← back to dashboard
+      </a>
     </div>
   );
 }

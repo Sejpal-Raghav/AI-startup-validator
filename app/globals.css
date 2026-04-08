@@ -2,37 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0f0f;
+  --bg-card: #1a1a1a;
+  --border: #2a2a2a;
+  --text: #e8e8e8;
+  --text-muted: #666;
+  --accent: #f5c518;
+  --danger: #ff6b6b;
+  --success: #4caf50;
+}
+
+[data-theme="light"] {
+  --bg: #f7f3eb;
+  --bg-card: #ede8dc;
+  --border: #d0c8b8;
+  --text: #1a1a1a;
+  --text-muted: #888;
+  --accent: #c9a000;
 }
 
 body {
-  background-color: #0f0f0f;
-  color: #e8e8e8;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-::selection {
-  background: #f5c518;
-  color: #0f0f0f;
+::selection { background: var(--accent); color: var(--bg); }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--accent); }
+
+.label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+/* easter egg tooltip */
+.logo-wrap { position: relative; display: inline-block; }
+.egg {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s;
+  pointer-events: none;
+  z-index: 100;
 }
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 3px;
-}
-
-.idea-card:hover {
-  border-color: #f5c518 !important;
-}
+.logo-wrap:hover .egg { opacity: 1; transform: translateY(0); }
