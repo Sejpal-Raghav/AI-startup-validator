@@ -75,3 +75,16 @@ body {
   z-index: 100;
 }
 .logo-wrap:hover .egg { opacity: 1; transform: translateY(0); }
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}

@@ -88,11 +88,15 @@ export default function Home() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="what problem does it solve? who is it for?"
-            rows={5}
-            style={{ ...inputStyle, resize: "vertical" }}
+            rows={4}
+            maxLength={1000}
+            style={{ ...inputStyle, resize: "none" }}
             onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
             onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
           />
+          <p style={{ textAlign: "right", fontSize: "0.72rem", color: description.length > 900 ? "var(--danger)" : "var(--text-muted)", marginTop: "0.3rem" }}>
+            {description.length}/1000
+          </p>
         </div>
 
         {error && (
