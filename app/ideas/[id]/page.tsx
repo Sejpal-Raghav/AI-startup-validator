@@ -27,6 +27,7 @@ export default async function IdeaReport({ params }: { params: Promise<{ id: str
       </div>
 
       <div id="report-content">
+
         {/* Score row */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "2rem" }}>
           <div className="card" style={{ padding: "1.2rem" }}>
@@ -43,20 +44,45 @@ export default async function IdeaReport({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        {/* Text sections */}
-        {[
-          { label: "problem", value: r.problem },
-          { label: "target customer", value: r.customer },
-          { label: "market overview", value: typeof r.market === "object" ? `${r.market.size} — ${r.market.trend}` : r.market },
-          { label: "justification", value: r.justification },
-        ].map(({ label, value }) => (
-          <div key={label} style={{ marginBottom: "1.4rem" }}>
-            <p className="label">{label}</p>
-            <div className="card" style={{ padding: "1rem 1.2rem" }}>
-              <p style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.7 }}>{value}</p>
-            </div>
+        {/* Problem */}
+        <div style={{ marginBottom: "1.4rem" }}>
+          <p className="label">problem</p>
+          <div className="card" style={{ padding: "1rem 1.2rem" }}>
+            <p style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.7 }}>{r.problem}</p>
           </div>
-        ))}
+        </div>
+
+        {/* Target Customer */}
+        <div style={{ marginBottom: "1.4rem" }}>
+          <p className="label">target customer</p>
+          <div className="card" style={{ padding: "1rem 1.2rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {(Array.isArray(r.customer) ? r.customer : [r.customer]).map((point: string, i: number) => (
+              <p key={i} style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                <span style={{ color: "var(--accent)", marginRight: "0.5rem" }}>—</span>{point}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* Market Overview */}
+        <div style={{ marginBottom: "1.4rem" }}>
+          <p className="label">market overview</p>
+          <div className="card" style={{ padding: "1rem 1.2rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {(Array.isArray(r.market) ? r.market : [typeof r.market === "object" ? `${r.market.size} — ${r.market.trend}` : r.market]).map((point: string, i: number) => (
+              <p key={i} style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                <span style={{ color: "var(--accent)", marginRight: "0.5rem" }}>—</span>{point}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* Justification */}
+        <div style={{ marginBottom: "1.4rem" }}>
+          <p className="label">justification</p>
+          <div className="card" style={{ padding: "1rem 1.2rem" }}>
+            <p style={{ color: "var(--text)", fontSize: "0.9rem", lineHeight: 1.7 }}>{r.justification}</p>
+          </div>
+        </div>
 
         {/* Competitors */}
         <div style={{ marginBottom: "1.4rem" }}>
@@ -74,7 +100,7 @@ export default async function IdeaReport({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        {/* Tech stack */}
+        {/* Tech Stack */}
         <div style={{ marginBottom: "2.5rem" }}>
           <p className="label">suggested tech stack</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -85,6 +111,7 @@ export default async function IdeaReport({ params }: { params: Promise<{ id: str
             ))}
           </div>
         </div>
+
       </div>
 
       <a href="/dashboard" style={{ color: "var(--text-muted)", fontSize: "0.82rem", textDecoration: "none" }}>

@@ -21,6 +21,13 @@ export default function Home() {
       body: JSON.stringify({ title, description }),
     });
 
+    if (res.status === 429) {
+      const data = await res.json();
+      setError(data.error);
+      setLoading(false);
+      return;
+    }
+
     if (res.status === 422) {
       const data = await res.json();
       setError(`idea too vague — ${data.error}`);

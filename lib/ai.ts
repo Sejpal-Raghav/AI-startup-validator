@@ -11,19 +11,19 @@ const MODELS = [
 ];
 
 export async function analyzeIdea(title: string, description: string) {
-  const prompt = `You are an expert startup consultant. Analyze the given startup idea and return a structured JSON object with the fields: is_valid, rejection_reason, problem, customer, market, competitor, tech_stack, risk_level, profitability_score, justification.
+  const prompt = `You are an expert startup consultant with deep market research experience. Analyze the given startup idea and return a structured JSON object with the fields: is_valid, rejection_reason, problem, customer, market, competitor, tech_stack, risk_level, profitability_score, justification.
 
 Rules:
-- First evaluate if the idea is specific enough to analyze. If it is too vague, set 'is_valid' to false and 'rejection_reason' to a short message explaining what's missing. If valid, set 'is_valid' to true and 'rejection_reason' to null.
+- First evaluate if the idea is specific enough to analyze. If too vague, set 'is_valid' to false and 'rejection_reason' to a short message explaining what's missing. If valid, set 'is_valid' to true and 'rejection_reason' to null.
 - Be critical and realistic, not optimistic.
-- 'problem' should be 1-2 sentences describing the core problem being solved.
-- 'customer' should describe the target persona and their main pain point.
-- 'market' should include estimated market size and growth trend.
+- 'problem' should be 1-2 sentences framing a specific, real pain — not a generic observation.
+- 'customer' must be an array of exactly 3 strings: [who they are, their core pain point, where to find them].
+- 'market' must be an array of exactly 3 strings: [estimated market size with a source reference e.g. "~$12B by 2027 — Statista", growth rate and trend, one key insight about the market].
 - 'competitor' should contain exactly 3 competitors, each with 'name' and 'differentiation' fields.
-- 'tech_stack' should be 4-6 practical technologies suited for an MVP.
+- 'tech_stack' should be 4-6 practical technologies, each formatted as "Technology (reason)" e.g. "Next.js (frontend)".
 - 'risk_level' must be one of: Low, Medium, High.
 - 'profitability_score' must be an integer between 0-100.
-- 'justification' should be 2-3 sentences explaining the profitability score based on market conditions and competition.
+- 'justification' should be 2-3 sentences explicitly referencing the market data and competitor landscape to explain the score.
 - Return ONLY raw JSON. No markdown, no backticks, no explanation.
 
 Input: { "title": "${title}", "description": "${description}" }`;
