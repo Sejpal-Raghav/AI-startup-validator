@@ -4,6 +4,7 @@ export default function DownloadReport({ title }: { title: string }) {
   async function download() {
     const html2pdf = (await import("html2pdf.js")).default;
     const element = document.getElementById("report-content");
+    if (!element) return;
     html2pdf(element, {
       margin: 0.5,
       filename: `${title.replace(/\s+/g, "-").toLowerCase()}-report.pdf`,
