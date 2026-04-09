@@ -21,7 +21,19 @@ export default function Home() {
       body: JSON.stringify({ title, description }),
     });
 
-    if (!res.ok) { setError("something went wrong."); setLoading(false); return; }
+    if (res.status === 422) {
+      const data = await res.json();
+      setError(`idea too vague — ${data.error}`);
+      setLoading(false);
+      return;
+    }
+
+    if (!res.ok) {
+      setError("something went wrong.");
+      setLoading(false);
+      return;
+    }
+
     const data = await res.json();
     router.push(`/ideas/${data.id}`);
   }
@@ -76,7 +88,11 @@ export default function Home() {
           />
         </div>
 
-        {error && <p style={{ color: "var(--danger)", fontSize: "0.82rem" }}>{error}</p>}
+        {error && (
+          <p style={{ color: "var(--danger)", fontSize: "0.82rem", background: "rgba(255,107,107,0.08)", border: "1px solid rgba(255,107,107,0.2)", borderRadius: "6px", padding: "0.6rem 0.9rem" }}>
+            {error}
+          </p>
+        )}
 
         <button
           onClick={handleSubmit}

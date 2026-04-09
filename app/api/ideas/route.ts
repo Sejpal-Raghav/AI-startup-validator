@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
   if (!title || !description) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
   const report = await analyzeIdea(title, description);
+
+  if (!report.is_valid) {
+    return NextResponse.json({ error: report.rejection_reason }, { status: 422 });
+  }
+
   const result = await sql`
     INSERT INTO ideas (title, description, report)
     VALUES (${title}, ${description}, ${JSON.stringify(report)})

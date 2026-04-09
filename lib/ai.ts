@@ -11,9 +11,10 @@ const MODELS = [
 ];
 
 export async function analyzeIdea(title: string, description: string) {
-  const prompt = `You are an expert startup consultant. Analyze the given startup idea and return a structured JSON object with the fields: problem, customer, market, competitor, tech_stack, risk_level, profitability_score, justification.
+  const prompt = `You are an expert startup consultant. Analyze the given startup idea and return a structured JSON object with the fields: is_valid, rejection_reason, problem, customer, market, competitor, tech_stack, risk_level, profitability_score, justification.
 
 Rules:
+- First evaluate if the idea is specific enough to analyze. If it is too vague, set 'is_valid' to false and 'rejection_reason' to a short message explaining what's missing. If valid, set 'is_valid' to true and 'rejection_reason' to null.
 - Be critical and realistic, not optimistic.
 - 'problem' should be 1-2 sentences describing the core problem being solved.
 - 'customer' should describe the target persona and their main pain point.
