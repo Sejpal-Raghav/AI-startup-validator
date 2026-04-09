@@ -1,5 +1,6 @@
 import Link from "next/link";
 import sql from "@/lib/db";
+import DeleteButton from "@/components/DeleteButton";
 
 export const dynamic = "force-dynamic";
 
@@ -38,9 +39,12 @@ export default async function Dashboard() {
               <div className="card" style={{ padding: "1.1rem 1.4rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <h2 style={{ fontWeight: 600, fontSize: "0.95rem" }}>{idea.title}</h2>
-                  <span style={{ color: "var(--text-muted)", fontSize: "0.78rem" }}>
-                    {new Date(idea.created_at).toLocaleDateString()}
-                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.78rem" }}>
+                      {new Date(idea.created_at).toLocaleDateString()}
+                    </span>
+                    <DeleteButton id={idea.id} />
+                  </div>
                 </div>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.83rem", marginTop: "0.35rem", lineHeight: 1.5 }}>
                   {idea.description.length > 120 ? idea.description.slice(0, 120) + "..." : idea.description}
