@@ -8,7 +8,7 @@ A full-stack MVP that lets users submit startup ideas and receive a structured, 
 
 ## Live Demo
 
-> [https://your-deployment-url.vercel.app](https://your-deployment-url.vercel.app)
+> [https://ai-startup-validator-ten.vercel.app/](https://ai-startup-validator-ten.vercel.app/)
 
 ---
 
