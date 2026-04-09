@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <footer style={{ textAlign: "center", padding: "2rem", borderTop: "1px solid var(--border)", fontSize: "0.72rem", color: "var(--text-muted)" }}>
-          built with existential dread · {new Date().getFullYear()}
+          Raghav Sejpal · {new Date().getFullYear()}
         </footer>
       </body>
     </html>
